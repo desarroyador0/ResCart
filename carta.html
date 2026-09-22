@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Tavola d'Oro | Alta Cocina Ítalo-Mediterránea</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        burgundy: '#581827',
+                        burgundyDark: '#3A0F1A',
+                        gold: '#D4AF37',
+                        goldLight: '#E8CA65',
+                        parchment: '#FBF8F2',
+                        parchmentDark: '#EFEAD8',
+                        charcoal: '#1A1818',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #121111;
+            color: #2D2D2D;
+            overflow-x: hidden;
+        }
+        .font-serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-luxury {
+            font-family: 'Cinzel', serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A1818;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+        .paper-bg {
+            background-color: #FBF8F2;
+            background-image: radial-gradient(#E2D9C5 0.8px, transparent 0.8px);
+            background-size: 24px 24px;
+        }
+        .gold-border {
+            border: 2px solid #D4AF37;
+        }
+        .gold-border-thin {
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .gold-glow {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+        }
+        /* Cinematic scroll fade effect for traditional mode items */
+        .trad-item {
+            opacity: 0.25;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .trad-item.active-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .trad-item.passed-item {
+            opacity: 0.35;
+            transform: translateY(-20px);
+            filter: blur(0.5px);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col antialiased selection:bg-gold selection:text-neutral-950">
+
+    <header class="sticky top-0 z-50 bg-[#141212]/95 backdrop-blur-md border-b border-gold/30 text-white shadow-2xl transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+            
+            <!-- Logo & Restaurant Name -->
+            <div class="flex items-center space-x-4 group cursor-pointer" onclick="location.reload()">
+                <div class="w-14 h-14 rounded-full gold-border flex items-center justify-center bg-gradient-to-br from-[#241518] to-[#0A0808] shadow-xl group-hover:scale-105 transition-transform duration-300">
+                    <i class="fa-solid fa-wheat-awn text-gold text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-luxury text-xl sm:text-2xl tracking-[0.2em] text-gold font-bold drop-shadow">LA TAVOLA D'ORO</h1>
+                    <p class="text-[10px] sm:text-xs tracking-[0.3em] text-neutral-400 font-sans uppercase">Alta Cucina Ítalo-Mediterránea</p>
+                </div>
+            </div>
+
+            <!-- Mode Switcher Toggle Button -->
+            <div class="flex items-center space-x-2 bg-neutral-900/90 p-1.5 rounded-full border border-gold/50 shadow-inner">
+                <button id="btnTrad" onclick="switchMode('trad')" class="px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 flex items-center space-x-2 bg-gold text-neutral-950 shadow-md">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span class="hidden sm:inline">Carta Tradicional (Scroll)</span>
+                    <span class="sm:hidden">Tradicional</span>
+                </button>
+                <button id="btnDigital" onclick="switchMode('digital')" class="px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 flex items-center space-x-2 text-neutral-300 hover:text-white">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span class="hidden sm:inline">Carta Digital Interactiva</span>
+                    <span class="sm:hidden">Digital</span>
+                </button>
+            </div>
+
+            <!-- Quick info badge -->
+            <div class="hidden xl:flex items-center space-x-3 text-xs text-neutral-300 bg-neutral-900/70 px-4 py-2 rounded-xl border border-neutral-800">
+                <i class="fa-solid fa-award text-gold text-base"></i>
+                <div>
+                    <p class="font-bold text-gold">Chef Donato Moretti</p>
+                    <p class="text-[10px] text-neutral-400">Guía Gastronómica 2026</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col relative">
+
+        <!-- ================= MODO CARTA TRADICIONAL (SCROLL CONTINUO) ================= -->
+        <section id="tradSection" class="w-full flex-grow relative paper-bg text-neutral-900 py-12 px-4 sm:px-6 lg:px-8 transition-opacity duration-500">
+            
+            <!-- Quick Section Jump Navigation Bar (Sticky inside Traditional Mode) -->
+            <div class="sticky top-28 z-40 max-w-5xl mx-auto mb-16 bg-[#241518]/95 backdrop-blur-md text-white p-3 sm:p-4 rounded-2xl gold-border shadow-2xl flex items-center justify-center gap-2 sm:gap-4 overflow-x-auto">
+                <span class="text-gold font-luxury text-xs tracking-widest hidden md:inline uppercase mr-2"><i class="fa-solid fa-compass mr-1"></i> Secciones:</span>
+                <button onclick="scrollToCategory('entradas')" class="cat-jump-btn px-3 py-1.5 rounded-xl text-xs font-luxury tracking-wider transition bg-gold text-neutral-950 font-bold whitespace-nowrap">Entradas</button>
+                <button onclick="scrollToCategory('pastas')" class="cat-jump-btn px-3 py-1.5 rounded-xl text-xs font-luxury tracking-wider transition bg-neutral-800 text-neutral-200 hover:text-gold whitespace-nowrap">Pastas</button>
+                <button onclick="scrollToCategory('carnes')" class="cat-jump-btn px-3 py-1.5 rounded-xl text-xs font-luxury tracking-wider transition bg-neutral-800 text-neutral-200 hover:text-gold whitespace-nowrap">Carnes & Pescados</button>
+                <button onclick="scrollToCategory('postres')" class="cat-jump-btn px-3 py-1.5 rounded-xl text-xs font-luxury tracking-wider transition bg-neutral-800 text-neutral-200 hover:text-gold whitespace-nowrap">Postres</button>
+                <button onclick="scrollToCategory('vinos')" class="cat-jump-btn px-3 py-1.5 rounded-xl text-xs font-luxury tracking-wider transition bg-neutral-800 text-neutral-200 hover:text-gold whitespace-nowrap">Vinos & Cocktails</button>
+            </div>
+
+            <!-- Traditional Menu Book Header -->
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <span class="text-gold font-luxury tracking-[0.4em] text-xs uppercase font-bold">Menu Degustazione • Autunno / Inverno</span>
+                <h2 class="font-luxury text-4xl sm:text-6xl text-[#3A0F1A] mt-3 font-bold tracking-wide">LA TAVOLA D'ORO</h2>
+                <div class="w-32 h-0.5 bg-gold mx-auto my-4"></div>
+                <p class="font-serif-title italic text-neutral-700 text-base sm:text-lg max-w-2xl mx-auto">
+                    "Un viaje sensorial por las recetas ancestrales de la nonna italiana elevadas a la alta cocina contemporánea con productos de denominación de origen."
+                </p>
+            </div>
+
+            <!-- Continuous Scroll Container -->
+            <div id="traditionalContainer" class="max-w-6xl mx-auto space-y-32 pb-24">
+                <!-- Dynamically populated via JS with alternating layouts -->
+            </div>
+
+        </section>
+
+
+        <!-- ================= MODO CARTA DIGITAL / VIRTUAL MODERNA ================= -->
+        <section id="digitalSection" class="w-full flex-grow py-10 px-4 sm:px-6 lg:px-8 hidden transition-opacity duration-500 max-w-7xl mx-auto text-white">
+            
+            <!-- Digital Search & Header -->
+            <div class="bg-neutral-900/90 p-6 sm:p-8 rounded-3xl border border-gold/40 shadow-2xl backdrop-blur mb-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div>
+                    <span class="text-gold text-xs uppercase tracking-[0.3em] font-bold">Experiencia Digital Interactiva</span>
+                    <h2 class="font-luxury text-3xl sm:text-4xl text-white mt-1">Nuestra Carta Completa</h2>
+                    <p class="text-neutral-400 text-sm mt-1">Busca por plato, ingrediente o maridaje y descubre cada detalle culinario.</p>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="relative w-full lg:w-96">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gold">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="digitalSearchInput" oninput="handleDigitalSearch(this.value)" placeholder="Buscar carpaccio, trufa, barolo..." 
+                        class="w-full pl-11 pr-4 py-3.5 bg-neutral-950 text-white placeholder-neutral-500 rounded-2xl border border-neutral-700 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold text-sm transition shadow-inner">
+                </div>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="flex items-center space-x-3 overflow-x-auto pb-4 mb-10 scrollbar-thin">
+                <button onclick="filterDigitalCategory('todos')" id="digCatBtn-todos" class="dig-cat-btn whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-luxury tracking-wider transition shadow bg-gold text-neutral-950 font-bold">
+                    <i class="fa-solid fa-border-all mr-2"></i> Todos
+                </button>
+                <button onclick="filterDigitalCategory('entradas')" id="digCatBtn-entradas" class="dig-cat-btn whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-luxury tracking-wider transition shadow bg-neutral-900 text-neutral-300 hover:text-gold border border-neutral-800">
+                    <i class="fa-solid fa-utensils mr-2"></i> Entradas
+                </button>
+                <button onclick="filterDigitalCategory('pastas')" id="digCatBtn-pastas" class="dig-cat-btn whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-luxury tracking-wider transition shadow bg-neutral-900 text-neutral-300 hover:text-gold border border-neutral-800">
+                    <i class="fa-solid fa-bowl-food mr-2"></i> Pastas Artesanales
+                </button>
+                <button onclick="filterDigitalCategory('carnes')" id="digCatBtn-carnes" class="dig-cat-btn whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-luxury tracking-wider transition shadow bg-neutral-900 text-neutral-300 hover:text-gold border border-neutral-800">
+                    <i class="fa-solid fa-fire-burner mr-2"></i> Carnes & Pescados
+                </button>
+                <button onclick="filterDigitalCategory('postres')" id="digCatBtn-postres" class="dig-cat-btn whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-luxury tracking-wider transition shadow bg-neutral-900 text-neutral-300 hover:text-gold border border-neutral-800">
+                    <i class="fa-solid fa-ice-cream mr-2"></i> Postres
+                </button>
+                <button onclick="filterDigitalCategory('vinos')" id="digCatBtn-vinos" class="dig-cat-btn whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-luxury tracking-wider transition shadow bg-neutral-900 text-neutral-300 hover:text-gold border border-neutral-800">
+                    <i class="fa-solid fa-wine-glass mr-2"></i> Vinos & Cocktails
+                </button>
+            </div>
+
+            <!-- Digital Grid -->
+            <div id="digitalMenuGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- No results message -->
+            <div id="digitalNoResults" class="hidden text-center py-20">
+                <div class="text-gold text-5xl mb-4"><i class="fa-solid fa-face-frown"></i></div>
+                <h3 class="text-white text-xl font-bold font-luxury">No encontramos platos con ese criterio</h3>
+                <p class="text-neutral-400 text-sm mt-2">Prueba buscando otro ingrediente o categoría.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= DETAIL / PAIRING MODAL ================= -->
+    <div id="dishModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="modalContent" class="bg-neutral-900 border border-gold/50 rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="relative h-72 w-full bg-neutral-950">
+                <img id="modalImg" src="" alt="Plato" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/222/D4AF37?text=La+Tavola+d%27Oro'">
+                <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent"></div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 bg-neutral-950/90 hover:bg-gold hover:text-neutral-950 text-white w-11 h-11 rounded-full flex items-center justify-center transition border border-gold/40 shadow-xl">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                <div class="absolute bottom-5 left-6 right-6">
+                    <span id="modalTag" class="bg-gold text-neutral-950 text-[10px] font-luxury font-bold uppercase px-3 py-1.5 rounded-full tracking-wider">Etiqueta</span>
+                    <h3 id="modalTitle" class="font-luxury text-2xl sm:text-3xl text-white font-bold mt-2 drop-shadow">Nombre del Plato</h3>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-5">
+                <div class="flex items-center justify-between">
+                    <span class="text-neutral-400 text-sm">Precio del Plato</span>
+                    <span id="modalPrice" class="font-luxury text-2xl sm:text-3xl text-gold font-bold">$0.00</span>
+                </div>
+                <hr class="border-neutral-800">
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-neutral-400 font-bold mb-1.5">Preparación y Origen</h4>
+                    <p id="modalDesc" class="text-neutral-300 text-sm sm:text-base leading-relaxed">Descripción detallada...</p>
+                </div>
+                <div class="bg-neutral-950/80 p-4 rounded-2xl border border-neutral-800 flex items-start space-x-3.5">
+                    <i class="fa-solid fa-wine-bottle text-gold text-2xl mt-0.5"></i>
+                    <div>
+                        <h5 class="text-xs uppercase font-bold text-gold tracking-wider">Maridaje Sugerido por el Sommelier</h5>
+                        <p id="modalPairing" class="text-xs sm:text-sm text-neutral-300 mt-1">Vino recomendado...</p>
+                    </div>
+                </div>
+                <div class="pt-2 flex flex-col sm:flex-row gap-3">
+                    <button onclick="addToOrder()" class="flex-grow bg-gold hover:bg-goldLight text-neutral-950 font-luxury font-bold py-3.5 rounded-2xl tracking-wider transition shadow-lg flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <span>Añadir a mi Experiencia</span>
+                    </button>
+                    <button onclick="closeModal()" class="px-6 py-3.5 bg-neutral-800 hover:bg-neutral-700 text-white font-semibold rounded-2xl transition">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#0B0A0A] border-t border-neutral-800 text-neutral-400 py-10 px-4 text-center text-xs space-y-4">
+        <div class="font-luxury text-gold tracking-[0.25em] text-sm">LA TAVOLA D'ORO • ALTA GASTRONOMÍA ÍTALO-MEDITERRÁNEA</div>
+        <p>Via Condotti 140, Roma / Sede Principal Bs. As. • Reservas: +54 9 11 4455-8900</p>
+        <p class="text-neutral-600">© 2026 La Tavola d'Oro. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Comprehensive high-end restaurant menu dataset
+        const menuData = [
+            // Entradas
+            {
+                id: 1,
+                category: 'entradas',
+                categoryName: 'Antipasti & Entradas',
+                name: 'Carpaccio di Manzo al Tartufo',
+                price: '$18.500',
+                tag: 'Recomendación del Chef',
+                desc: 'Finitas láminas de lomo estacionado cortadas a cuchillo, marinadas en aceite de oliva extra virgen D.O.P., alcaparras fritas, lascas de Parmigiano Reggiano de 24 meses y emulsión de trufa negra sutil.',
+                pairing: 'Maridar con un elegante Chianti Classico o Chardonnay reserva.',
+                img: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 2,
+                category: 'entradas',
+                categoryName: 'Antipasti & Entradas',
+                name: 'Burrata Pugliese con Fichi e Prosciutto',
+                price: '$21.200',
+                tag: 'Sin TACC • Vegetariano',
+                desc: 'Burrata artesanal importada de Puglia con centro sumamente cremoso, acompañada de higos negros frescos caramelizados al aceto balsámico de Módena y jamón San Daniele de 20 meses.',
+                pairing: 'Ideal con un vino blanco Vermentino di Sardegna o cóctel Spritz de autor.',
+                img: 'https://images.unsplash.com/photo-1592417817098-8f3d691a4bf5?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 3,
+                category: 'entradas',
+                categoryName: 'Antipasti & Entradas',
+                name: 'Carpaccio di Polpo con Agrumi di Sicilia',
+                price: '$23.000',
+                tag: 'Frescura del Mar',
+                desc: 'Pulpo atlántico prensado en terrina, finamente laminado con emulsión de limones sicilianos, alcaparras silvestres, eneldo fresco y perlas de aceite de oliva al romero.',
+                pairing: 'Excelente con un Pinot Grigio fresco de Friuli.',
+                img: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?q=80&w=900&auto=format&fit=crop'
+            },
+
+            // Pastas Artesanales
+            {
+                id: 4,
+                category: 'pastas',
+                categoryName: 'Pasta Fatta in Casa',
+                name: 'Tagliolini al Nero di Seppia con Gamberi',
+                price: '$28.500',
+                tag: 'Especialidad de la Casa',
+                desc: 'Pasta larga artesanal al huevo con tinta de calamar, salteada con langostinos patagónicos frescos, tomates cherry confitados al horno, vino blanco Vermentino y toque picante de peperoncino.',
+                pairing: 'Perfecto maridaje con un vino blanco Fiano di Avellino.',
+                img: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 5,
+                category: 'pastas',
+                categoryName: 'Pasta Fatta in Casa',
+                name: 'Ravioli di Agnello al burro di malga',
+                price: '$29.800',
+                tag: 'Signature Dish',
+                desc: 'Ravioles rellenos de cordero braseado al vino Barolo durante 8 horas, salseados con manteca de malga clarificada, salvia fresca crujiente y queso pecorino romano rallado.',
+                pairing: 'Inigualable con un Barolo D.O.C.G. de gran estructura.',
+                img: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281297?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 6,
+                category: 'pastas',
+                categoryName: 'Pasta Fatta in Casa',
+                name: 'Risotto ai Funghi Porcini e Tartufo Bianco',
+                price: '$31.000',
+                tag: 'Vegetariano',
+                desc: 'Arroz Carnaroli estacionado, mantecado con Parmigiano Reggiano de añejamiento prolongado, selección de hongos Porcini silvestres y láminas generosas de trufa blanca fresca.',
+                pairing: 'Maridar con un Brunello di Montalcino o Pinot Noir de altura.',
+                img: 'https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?q=80&w=900&auto=format&fit=crop'
+            },
+
+            // Carnes y Pescados
+            {
+                id: 7,
+                category: 'carnes',
+                categoryName: 'Secondi di Carne e Pesce',
+                name: 'Filetto alla Rossini con Foie Gras',
+                price: '$39.500',
+                tag: 'Alta Cocina',
+                desc: 'Medallón de lomo tierno sellado a la perfección con tostada de brioche casero, coronado con medallón de foie gras poêlé, trufa negra laminada y reducción de vino Oporto y demiglace.',
+                pairing: 'Ideal con un gran Amarone della Valpolicella.',
+                img: 'https://images.unsplash.com/photo-1558030006-450675393462?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 8,
+                category: 'carnes',
+                categoryName: 'Secondi di Carne e Pesce',
+                name: 'Branzino in Crosta di Sale Marino',
+                price: '$36.200',
+                tag: 'Pesca del Día',
+                desc: 'Robalo salvaje horneado íntegramente en costra de sal marina de Cervia y hierbas mediterráneas, desespinado en mesa y servido con emulsión de aceite de oliva virgen y limón.',
+                pairing: 'Acompañar con un vino blanco Greco di Tufo mineral.',
+                img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 9,
+                category: 'carnes',
+                categoryName: 'Secondi di Carne e Pesce',
+                name: 'Ossobuco alla Milanese con Risotto allo Zafferano',
+                price: '$34.000',
+                tag: 'Tradición Italiana',
+                desc: 'Tierno corte de ternera braseado lentamente con verduras, vino blanco y caldo de carne, acompañado del clásico risotto milanesa cremoso al azafrán puro y gremolata de limón.',
+                pairing: 'Perfecto con un Nebbiolo d’Alba.',
+                img: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=900&auto=format&fit=crop'
+            },
+
+            // Postres
+            {
+                id: 10,
+                category: 'postres',
+                categoryName: 'Dolci Tradizionali',
+                name: 'Tiramisù della Nonna con Mascarpone Artigianale',
+                price: '$13.500',
+                tag: 'Clásico Insuperable',
+                desc: 'Savoiards artesanales empapados en café espresso ristretto y licor Amaretto, alternados con suave crema de mascarpone fresco y espolvoreados con cacao amargo belga.',
+                pairing: 'Maridar con un vino Passito di Pantelleria o café espresso.',
+                img: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 11,
+                category: 'postres',
+                categoryName: 'Dolci Tradizionali',
+                name: 'Cannoli Siciliani Croccanti con Pistacchio',
+                price: '$12.000',
+                tag: 'Especialidad',
+                desc: 'Tubos de masa crujiente dorada al horno rellenos de crema de requesón de oveja dulce, chips de chocolate amargo y pistachos tostados de Bronte.',
+                pairing: 'Ideal con un vino Vin Santo toscano.',
+                img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 12,
+                category: 'postres',
+                categoryName: 'Dolci Tradizionali',
+                name: 'Panna Cotta ai Frutti di Bosco e Lavanda',
+                price: '$11.800',
+                tag: 'Sin TACC',
+                desc: 'Crema cocida tradicional infusionada con flores de lavanda orgánica, cubierta con coulis especiado de frutos rojos silvestres de estación y menta fresca.',
+                pairing: 'Excelente con un vino espumante Asti Dolce.',
+                img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=900&auto=format&fit=crop'
+            },
+
+            // Vinos & Cocktails
+            {
+                id: 13,
+                category: 'vinos',
+                categoryName: 'Vini & Cocktail d’Autore',
+                name: 'Barolo D.O.C.G. Riserva - Marchesi di Barolo',
+                price: '$45.000',
+                tag: 'Gran Reserva',
+                desc: 'Vino tinto italiano emblemático, color rojo granate con reflejos anaranjados. Notas complejas a violetas, trufa, cuero y especias. Envejecido 38 meses en roble de Eslavonia (750ml).',
+                pairing: 'El compañero supremo para carnes rojas y pastas rellenas.',
+                img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 14,
+                category: 'vinos',
+                categoryName: 'Vini & Cocktail d’Autore',
+                name: 'Negroni Sbagliato con Prosecco Superiore',
+                price: '$10.500',
+                tag: 'Cocktail de Autor',
+                desc: 'Sofisticada variante del clásico negroni donde el gin es sustituido por Prosecco D.O.C.G., mezclado con Campari y Vermut rosso dulce añejado en barrica.',
+                pairing: 'El aperitivo italiano por excelencia para comenzar la velada.',
+                img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=900&auto=format&fit=crop'
+            },
+            {
+                id: 15,
+                category: 'vinos',
+                categoryName: 'Vini & Cocktail d’Autore',
+                name: 'Amarone della Valpolicella Classico',
+                price: '$42.000',
+                tag: 'Reserva Especial',
+                desc: 'Vino potente y aterciopelado elaborado con uvas pasificadas en colinas de Verona. Notas a frutos negros confitados, cacao y tabaco dulce (Botella 750ml).',
+                pairing: 'Imprescindible con quesos maduros y carnes de caza.',
+                img: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=900&auto=format&fit=crop'
+            }
+        ];
+
+        let currentMode = 'trad'; // 'trad' or 'digital'
+
+        function switchMode(mode) {
+            currentMode = mode;
+            const tradSec = document.getElementById('tradSection');
+            const digSec = document.getElementById('digitalSection');
+            const btnTrad = document.getElementById('btnTrad');
+            const btnDig = document.getElementById('btnDigital');
+
+            if (mode === 'trad') {
+                tradSec.classList.remove('hidden');
+                digSec.classList.add('hidden');
+                btnTrad.className = "px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 flex items-center space-x-2 bg-gold text-neutral-950 shadow-md";
+                btnDig.className = "px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 flex items-center space-x-2 text-neutral-300 hover:text-white";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                tradSec.classList.add('hidden');
+                digSec.classList.remove('hidden');
+                btnDig.className = "px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 flex items-center space-x-2 bg-gold text-neutral-950 shadow-md";
+                btnTrad.className = "px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 flex items-center space-x-2 text-neutral-300 hover:text-white";
+                renderDigitalGrid(menuData);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Render Traditional Continuous Scroll Menu with Alternating Layout
+        function renderTraditionalMenu() {
+            const container = document.getElementById('traditionalContainer');
+            let html = '';
+
+            const categories = [
+                { key: 'entradas', title: 'Antipasti & Entradas', subtitle: 'Para iniciar la experiencia culinaria' },
+                { key: 'pastas', title: 'Pasta Fatta in Casa', subtitle: 'Elaborada artesanalmente cada mañana' },
+                { key: 'carnes', title: 'Secondi di Carne e Pesce', subtitle: 'Cortes seleccionados y pesca fresca' },
+                { key: 'postres', title: 'Dolci Tradizionali', subtitle: 'El dulce cierre de la velada' },
+                { key: 'vinos', title: 'Vini & Cocktail d’Autore', subtitle: 'Bodegas de denominación de origen' }
+            ];
+
+            categories.forEach((cat, catIdx) => {
+                html += `
+                    <div id="cat-${cat.key}" class="category-block pt-8">
+                        <div class="text-center mb-12">
+                            <span class="text-gold font-luxury text-xs tracking-[0.3em] uppercase font-bold">Sección 0${catIdx + 1}</span>
+                            <h3 class="font-luxury text-3xl sm:text-4xl text-[#3A0F1A] font-bold mt-1">${cat.title}</h3>
+                            <p class="font-serif-title italic text-neutral-600 text-sm sm:text-base mt-1">${cat.subtitle}</p>
+                            <div class="w-16 h-0.5 bg-gold/60 mx-auto mt-3"></div>
+                        </div>
+                        <div class="space-y-16">
+                `;
+
+                const items = menuData.filter(i => i.category === cat.key);
+                items.forEach((item, index) => {
+                    const isEven = index % 2 === 0;
+                    // Alternating layout: image left / text right vs text left / image right
+                    html += `
+                        <div class="trad-item flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-8 lg:gap-12 bg-white/80 backdrop-blur p-6 sm:p-10 rounded-3xl gold-border-thin shadow-xl cursor-pointer hover:border-gold transition-all duration-300" onclick="openModal(${item.id})">
+                            <div class="w-full lg:w-1/2 h-72 sm:h-80 rounded-2xl overflow-hidden shadow-lg relative group">
+                                <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/600x400/222/D4AF37?text=La+Tavola+d%27Oro'">
+                                <div class="absolute top-4 left-4 bg-neutral-950/80 text-gold px-3.5 py-1.5 rounded-full text-[11px] font-luxury font-bold uppercase tracking-wider border border-gold/30 backdrop-blur">
+                                    ${item.tag}
+                                </div>
+                            </div>
+                            <div class="w-full lg:w-1/2 flex flex-col justify-center space-y-4">
+                                <div class="flex items-start justify-between gap-4">
+                                    <h4 class="font-luxury text-2xl sm:text-3xl text-[#241518] font-bold">${item.name}</h4>
+                                    <span class="font-luxury text-2xl sm:text-3xl text-[#3A0F1A] font-bold whitespace-nowrap">${item.price}</span>
+                                </div>
+                                <p class="text-neutral-700 text-sm sm:text-base leading-relaxed font-sans">${item.desc}</p>
+                                <div class="bg-[#F7F2E6] p-4 rounded-xl border border-gold/30 flex items-start space-x-3">
+                                    <i class="fa-solid fa-wine-glass text-gold text-lg mt-0.5"></i>
+                                    <div>
+                                        <p class="text-[11px] uppercase font-bold text-gold tracking-wider">Maridaje Recomendado</p>
+                                        <p class="text-xs sm:text-sm text-neutral-800 italic mt-0.5">${item.pairing}</p>
+                                    </div>
+                                </div>
+                                <div class="pt-2 flex items-center justify-between text-xs text-gold font-luxury font-bold">
+                                    <span class="flex items-center"><i class="fa-solid fa-circle-info mr-1.5"></i> Toca para ver detalles</span>
+                                    <span class="text-neutral-400 group-hover:translate-x-1 transition-transform">Ver plato →</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+
+            container.innerHTML = html;
+            setupScrollObserver();
+        }
+
+        // Quick Scroll to Section
+        function scrollToCategory(catKey) {
+            const el = document.getElementById(`cat-${catKey}`);
+            if (el) {
+                const offset = 130;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = el.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+
+            // Update active state on jump buttons
+            document.querySelectorAll('.cat-jump-btn').forEach(btn => {
+                btn.className = "cat-jump-btn px-3 py-1.5 rounded-xl text-xs font-luxury tracking-wider transition bg-neutral-800 text-neutral-200 hover:text-gold whitespace-nowrap";
+            });
+            event.currentTarget.className = "cat-jump-btn px-3 py-1.5 rounded-xl text-xs font-luxury tracking-wider transition bg-gold text-neutral-950 font-bold whitespace-nowrap";
+        }
+
+        // Cinematic Scroll Observer for Traditional Mode items
+        function setupScrollObserver() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '-15% 0px -15% 0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const el = entry.target;
+                    if (entry.isIntersecting) {
+                        el.classList.add('active-item');
+                        el.classList.remove('passed-item');
+                    } else {
+                        const rect = el.getBoundingClientRect();
+                        if (rect.top < 0) {
+                            el.classList.remove('active-item');
+                            el.classList.add('passed-item');
+                        } else {
+                            el.classList.remove('active-item', 'passed-item');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.trad-item').forEach(item => {
+                observer.observe(item);
+            });
+        }
+
+        // Render Digital Interactive Grid
+        function renderDigitalGrid(items) {
+            const grid = document.getElementById('digitalMenuGrid');
+            const noRes = document.getElementById('digitalNoResults');
+
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                noRes.classList.remove('hidden');
+                return;
+            }
+
+            noRes.classList.add('hidden');
+            let html = '';
+
+            items.forEach(dish => {
+                html += `
+                    <div onclick="openModal(${dish.id})" class="bg-neutral-900 rounded-3xl border border-neutral-800 hover:border-gold/60 overflow-hidden shadow-xl transition-all duration-300 flex flex-col group cursor-pointer hover:-translate-y-1.5">
+                        <div class="relative h-52 w-full overflow-hidden bg-neutral-950">
+                            <img src="${dish.img}" alt="${dish.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/222/D4AF37?text=La+Tavola+d%27Oro'">
+                            <div class="absolute top-3 left-3 bg-neutral-950/85 backdrop-blur text-gold px-3 py-1.5 rounded-full text-[10px] font-luxury font-bold uppercase tracking-wider border border-gold/30">
+                                ${dish.tag}
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div>
+                                <div class="flex items-start justify-between gap-2">
+                                    <h4 class="font-luxury text-xl text-white font-bold group-hover:text-gold transition">${dish.name}</h4>
+                                    <span class="font-luxury text-gold font-bold text-xl whitespace-nowrap">${dish.price}</span>
+                                </div>
+                                <p class="text-neutral-400 text-xs sm:text-sm mt-2.5 line-clamp-2 leading-relaxed">${dish.desc}</p>
+                            </div>
+                            <div class="pt-4 border-t border-neutral-800 flex items-center justify-between text-xs text-gold">
+                                <span class="flex items-center"><i class="fa-solid fa-wine-glass mr-1.5"></i> Con maridaje</span>
+                                <span class="bg-gold/10 group-hover:bg-gold group-hover:text-neutral-950 px-3.5 py-1.5 rounded-xl transition font-semibold">Ver Plato</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function filterDigitalCategory(catKey) {
+            document.querySelectorAll('.dig-cat-btn').forEach(btn => {
+                btn.className = "dig-cat-btn whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-luxury tracking-wider transition shadow bg-neutral-900 text-neutral-300 hover:text-gold border border-neutral-800";
+            });
+            const activeBtn = document.getElementById(`digCatBtn-${catKey}`);
+            if (activeBtn) {
+                activeBtn.className = "dig-cat-btn whitespace-nowrap px-6 py-3 rounded-2xl text-xs font-luxury tracking-wider transition shadow bg-gold text-neutral-950 font-bold";
+            }
+
+            document.getElementById('digitalSearchInput').value = '';
+
+            if (catKey === 'todos') {
+                renderDigitalGrid(menuData);
+            } else {
+                const filtered = menuData.filter(item => item.category === catKey);
+                renderDigitalGrid(filtered);
+            }
+        }
+
+        function handleDigitalSearch(query) {
+            const q = query.toLowerCase().trim();
+            if (q === '') {
+                renderDigitalGrid(menuData);
+                return;
+            }
+
+            const filtered = menuData.filter(item => 
+                item.name.toLowerCase().includes(q) || 
+                item.desc.toLowerCase().includes(q) || 
+                item.categoryName.toLowerCase().includes(q) ||
+                item.tag.toLowerCase().includes(q) ||
+                item.pairing.toLowerCase().includes(q)
+            );
+            renderDigitalGrid(filtered);
+        }
+
+        // Modal Logic
+        function openModal(id) {
+            const dish = menuData.find(d => d.id === id);
+            if (!dish) return;
+
+            document.getElementById('modalImg').src = dish.img;
+            document.getElementById('modalTag').innerText = dish.tag;
+            document.getElementById('modalTitle').innerText = dish.name;
+            document.getElementById('modalPrice').innerText = dish.price;
+            document.getElementById('modalDesc').innerText = dish.desc;
+            document.getElementById('modalPairing').innerText = dish.pairing;
+
+            const modal = document.getElementById('dishModal');
+            const content = document.getElementById('modalContent');
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('dishModal');
+            const content = document.getElementById('modalContent');
+
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+        }
+
+        function addToOrder() {
+            closeModal();
+            // Custom friendly notification message box instead of alert()
+            const notif = document.createElement('div');
+            notif.className = "fixed bottom-8 right-8 z-50 bg-gold text-neutral-950 px-6 py-3.5 rounded-2xl shadow-2xl font-luxury font-bold text-sm tracking-wider flex items-center space-x-3 animate-fade-in";
+            notif.innerHTML = `<i class="fa-solid fa-circle-check text-lg"></i><span>¡Plato añadido a tu experiencia gastronómica!</span>`;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 3500);
+        }
+
+        document.getElementById('dishModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize on load
+        window.onload = function() {
+            renderTraditionalMenu();
+        };
+    </script>
+</body>
+</html>
